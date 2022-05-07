@@ -4,7 +4,7 @@ This code is for the virtual staining part of paper _resection-inspired histopat
 
 |            2 Channels            |            2 Channels            |            3 Channels            |
 | :------------------------------: | :------------------------------: | :------------------------------: |
-|<img src="./figure/he-mpm.gif"  height=300 width=300>|<img src="./figure/he-mpm1.gif"  height=300 width=300>|<img src="./figure/ppb-mpm.gif"  height=300 width=300>|
+|<img src="./figure/he-mpm.gif"  height=260 width=260>|<img src="./figure/he-mpm1.gif"  height=260 width=260>|<img src="./figure/ppb-mpm.gif"  height=260 width=260>|
 
 <img src="./figure/structure.png"  height=500 width=1000>
 ![structure of CCM-stainGAN](/figure/structure.png)
