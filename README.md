@@ -1,6 +1,6 @@
 # CCM-stainGAN：Code will be uploaded as soon as the paper is accepted.
 
-This code is for the virtual staining part of paper _resection-inspired histopathological diagnosis of cerebral cavernous malformations using quantitative multiphoton microscopy_.
+This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
 
 
 ## Preview
