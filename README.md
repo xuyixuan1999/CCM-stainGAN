@@ -10,7 +10,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
 ## Network architecture
 
-<img src="./figure/structure.png"  height=400 width=720>
+<img src="./figure/structure.png"  height=400 width=780>
 
 ## 1. Create Envirement:
 
@@ -60,8 +60,8 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   				|--he_000_001.png
   				:
   				|--he_099_099.png
-          |--test
-          	|--A
+			|--test
+				|--A
   				|--mpm_000_000.png
   				|--mpm_000_001.png
   				:
