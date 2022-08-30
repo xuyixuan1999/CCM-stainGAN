@@ -1,6 +1,6 @@
 
 
-# CCM-stainGAN：Code will be uploaded as soon as the paper is accepted.
+# CCM-stainGAN
 
 This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Us******ing Quantitative Multiphoton Microscopy***.
 
@@ -35,7 +35,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
   **Note:** access code for `Baidu Disk` is `ccm1`.
   
-- Split the images into tiles by `data_utils.py`
+- Split the images into tiles
 
 - Place the training MPM tiles to `/CCM-StainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-StainGAN/dataset/trian/B/`
 
