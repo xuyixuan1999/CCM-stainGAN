@@ -27,7 +27,7 @@ parser.add_argument('--gpu_ids', type=str, default='5', help='choose gpus')
 parser.add_argument('--num_worker', type=int, default=4, help='number worker of dataloader')
 parser.add_argument('--outf', type=str, default='./output/', help='root directory of the models')
 parser.add_argument('--pretrained_model_path', type=str, default='', help='load model or not')
-parser.add_argument('--env', type=str, default='utom', help='environment name of visdom')
+parser.add_argument('--env', type=str, default='cycle', help='environment name of visdom')
 
 opt = parser.parse_args()
 
