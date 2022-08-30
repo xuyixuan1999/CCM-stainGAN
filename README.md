@@ -22,7 +22,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 - Python packages:
 
   ```shell
-  cd CCM-StainGAN
+  cd CCM-stainGAN
   
   conda activate CCM-stainGAN
   
@@ -37,16 +37,16 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   
 - Split the images into tiles
 
-- Place the training MPM tiles to `/CCM-StainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-StainGAN/dataset/trian/B/`
+- Place the training MPM tiles to `/CCM-stainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-stainGAN/dataset/trian/B/`
 
 - Place the training MPM category tiles to `/CCM-stainGAN/dataset/trian/cls_A`  and the H&E  category tiles to `/CCM-stainGAN/dataset/trian/cls_B`  
 
-- Place the testing MPM tiles to `/CCM-StainGAN/dataset/test/A/` and the H&E tiles to `/CCM-StainGAN/dataset/test/B/`
+- Place the testing MPM tiles to `/CCM-stainGAN/dataset/test/A/` and the H&E tiles to `/CCM-stainGAN/dataset/test/B/`
 
 - Then this repo is collected as the following form:
 
   ```shell
-  |--CCM-StainGAN
+  |--CCM-stainGAN
     |--train.py
     |--utils.py
     |--data_utils.py
@@ -96,9 +96,9 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
 (2) Run the following command to train the model
 
-cd /CCM-StainGAN/
+cd /CCM-stainGAN/
 
-# transform by CCMStrain-GAN
+# transform by CCM-stainGAN
 python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
 
 # transform by CycleGAN
@@ -111,9 +111,9 @@ python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0
 Or run the following command:
 
 ```shell
-cd /CCM-StainGAN/
+cd /CCM-stainGAN/
 
-# transform by CCMStrain-GAN
+# transform by CCM-stainGAN
 bash train_cls.sh
 
 # transform by CycleGAN
@@ -123,13 +123,13 @@ bash train_cycle.sh
 bash train_utom.sh
 ```
 
-The models will be saved in `/CCM-StainGAN/output/{env}/`.
+The models will be saved in `/CCM-stainGAN/output/{env}/`.
 
 ## Citation
 
 If the repo helps you, please consider citing our works;
 
 ```shell
-# CCMStrain-GAN
+# CCM-stainGAN
 
 ```
