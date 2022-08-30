@@ -102,10 +102,10 @@ cd /CCM-StainGAN/
 python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
 
 # transform by CycleGAN
-python train_cycle.py --env cycle
+python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --env cycle
 
 # transform by UTOM
-python train_utom.py --env utom
+python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env utom
 ```
 
 Or run the following command:
