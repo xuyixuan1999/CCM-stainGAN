@@ -24,7 +24,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   ```shell
   cd CCM-StainGAN
   
-  conda activatet CCM-stainGAN
+  conda activate CCM-stainGAN
   
   pip install -r requirements.txt
   ```
