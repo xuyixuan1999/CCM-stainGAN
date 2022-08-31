@@ -13,8 +13,8 @@ class ImageDataset(Dataset):
         self.unaligned = unaligned
         self.batch_size = batch_size
 
-        self.files_A = sorted(glob.glob(os.path.join(root, 'train/A') + '/*.png'))[::200]
-        self.files_B = sorted(glob.glob(os.path.join(root, 'train/B') + '/*.png'))[::200]
+        self.files_A = sorted(glob.glob(os.path.join(root, 'train/A') + '/*.png'))
+        self.files_B = sorted(glob.glob(os.path.join(root, 'train/B') + '/*.png'))
 
     def __getitem__(self, index):
         item_A = self.transform(Image.open(self.files_A[index % len(self.files_A)]))
@@ -80,13 +80,13 @@ class TestDataset(Dataset):
         return len(self.files)
         
 if __name__ == '__main__':
-    root = '../datasets/test data/s18-24988-6-overlap50'
-    transforms_ = transforms.Compose([transforms.ToTensor(),
-                                      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                      ])
-    dataset = TestDataset(root, transforms_=transforms_)
-    dataloader = DataLoader(dataset, batch_size=3, num_workers=8)
-    for i, batch in enumerate(dataloader):
-        img = (batch['img']+1) * 127.5
-        name = batch['name']
-        print(name.size())
+    # root = '../datasets/test data/s18-24988-6-overlap50'
+    # transforms_ = transforms.Compose([transforms.ToTensor(),
+    #                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    #                                   ])
+    # dataset = TestDataset(root, transforms_=transforms_)
+    # dataloader = DataLoader(dataset, batch_size=3, num_workers=8)
+    # for i, batch in enumerate(dataloader):
+    #     img = (batch['img']+1) * 127.5
+    #     name = batch['name']
+    #     print(name.size())

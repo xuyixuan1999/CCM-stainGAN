@@ -2,7 +2,7 @@
 
 # CCM-stainGAN
 
-This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Us******ing Quantitative Multiphoton Microscopy***.
+This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
 
 ## Preview
 
@@ -31,7 +31,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
 ## 2. Data Preparation
 
-- The MPM and H&E images are available, download from ([Google Drive](https://www.google.com) / [Baidu Disk](https://www.baidu.com)). 
+- The MPM and H&E images are available, download from ([Google Drive](https://drive.google.com/drive/folders/1zua6CNu9HDC657dBz4sB0UU6Fg7PRyZY?usp=sharing) / [Baidu Disk](https://pan.baidu.com/s/148UNzbngfKQeHX7RsoMnXg?pwd=ccm1)). 
 
   **Note:** access code for `Baidu Disk` is `ccm1`.
   
@@ -101,7 +101,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   cd /CCM-stainGAN/
   
   # transform by CCM-stainGAN
-  python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env ccm
+  python train.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env ccm
   
   # transform by CycleGAN
   python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0 --env cycle
@@ -116,7 +116,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   cd /CCM-stainGAN/
   
   # transform by CCM-stainGAN
-  python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
+  python train.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
   
   # transform by CycleGAN
   python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --env cycle
