@@ -79,14 +79,3 @@ class TestDataset(Dataset):
     def __len__(self):
         return len(self.files)
         
-if __name__ == '__main__':
-    # root = '../datasets/test data/s18-24988-6-overlap50'
-    # transforms_ = transforms.Compose([transforms.ToTensor(),
-    #                                   transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    #                                   ])
-    # dataset = TestDataset(root, transforms_=transforms_)
-    # dataloader = DataLoader(dataset, batch_size=3, num_workers=8)
-    # for i, batch in enumerate(dataloader):
-    #     img = (batch['img']+1) * 127.5
-    #     name = batch['name']
-    #     print(name.size())
