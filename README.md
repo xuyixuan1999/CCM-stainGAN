@@ -91,43 +91,45 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   The image's name of category  dataset must add category label in the end of name , which split of '_'. Such as: img_001_0.png, img_002_0.png, img_003_1.png, img_004_1.png.  The last number is the label of the dataset.
 ## 3. Training
 
-```shell
 (1) Download the data and split the images in the correct place.
 
 (2) Run the following command to train the model
 
-cd /CCM-stainGAN/
+- Single GPU 
 
-# transform by CCM-stainGAN
-python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
+  ```shell
+  cd /CCM-stainGAN/
+  
+  # transform by CCM-stainGAN
+  python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env ccm
+  
+  # transform by CycleGAN
+  python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0 --env cycle
+  
+  # transform by UTOM
+  python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env utom
+  ```
 
-# transform by CycleGAN
-python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --env cycle
+- Multi GPUs
 
-# transform by UTOM
-python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env utom
-```
-
-Or run the following command:
-
-```shell
-cd /CCM-stainGAN/
-
-# transform by CCM-stainGAN
-bash train_cls.sh
-
-# transform by CycleGAN
-bash train_cycle.sh
-
-# transform by UTOM
-bash train_utom.sh
-```
+  ```shell
+  cd /CCM-stainGAN/
+  
+  # transform by CCM-stainGAN
+  python train_cls.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
+  
+  # transform by CycleGAN
+  python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --env cycle
+  
+  # transform by UTOM
+  python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env utom
+  ```
 
 The models will be saved in `/CCM-stainGAN/output/{env}/`.
 
 ## Citation
 
-If the repo helps you, please consider citing our works;
+If the repo helps you, please consider citing our works:
 
 ```shell
 # CCM-stainGAN
