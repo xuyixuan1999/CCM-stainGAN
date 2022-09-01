@@ -35,13 +35,13 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
   **Note:** access code for `Baidu Disk` is `ccm1`.
   
-- Split the images into tiles
+- Split the images into tiles.
 
-- Place the training MPM tiles to `/CCM-stainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-stainGAN/dataset/trian/B/`
+- Place the training MPM tiles to `/CCM-stainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-stainGAN/dataset/trian/B/`.
 
-- Place the training MPM category tiles to `/CCM-stainGAN/dataset/trian/cls_A`  and the H&E  category tiles to `/CCM-stainGAN/dataset/trian/cls_B`  
+- Place the training MPM category tiles to `/CCM-stainGAN/dataset/trian/cls_A`  and the H&E  category tiles to `/CCM-stainGAN/dataset/trian/cls_B` .
 
-- Place the testing MPM tiles to `/CCM-stainGAN/dataset/test/A/` and the H&E tiles to `/CCM-stainGAN/dataset/test/B/`
+- Place the testing MPM tiles to `/CCM-stainGAN/dataset/test/A/` and the H&E tiles to `/CCM-stainGAN/dataset/test/B/`.
 
 - Then this repo is collected as the following form:
 
@@ -93,7 +93,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
 (1) Download the data and split the images in the correct place.
 
-(2) Run the following command to train the model
+(2) Run the following command to train the model.
 
 - Single GPU 
 
@@ -101,29 +101,32 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   cd /CCM-stainGAN/
   
   # transform by CCM-stainGAN
-  python train.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env ccm
+  python train.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
   
   # transform by CycleGAN
-  python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0 --env cycle
+  python train_cycle.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --decay_epoch 50 --env cycle
   
   # transform by UTOM
-  python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0 --threshhold_A 35 --threshhold_B 180 --env utom
+  python train_utom.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
 
 - Multi GPUs
 
+  Please change the **gpu_ids** to adapt your device.
+  
   ```shell
   cd /CCM-stainGAN/
   
   # transform by CCM-stainGAN
-  python train.py --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env ccm
+  python train.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
   
   # transform by CycleGAN
-  python train_cycle.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --env cycle
+  python train_cycle.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --env cycle
   
   # transform by UTOM
-  python train_utom.py --end_epoch 100 --batch_size 4 --decay_epoch 50 --gpu_ids 0,1,2,3 --threshhold_A 35 --threshhold_B 180 --env utom
+  python train_utom.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
+  
 
 The models will be saved in `/CCM-stainGAN/output/{env}/`.
 
