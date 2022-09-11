@@ -1,5 +1,6 @@
 import argparse
 import datetime
+from distutils.command.install_egg_info import safe_name
 import itertools
 import os
 
@@ -7,6 +8,7 @@ import torch
 import torchvision.transforms as trans
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
+import torch.distributed as dist
 
 from datasets import ClsDataset, ImageDataset
 from models import Discriminator, UnetClsGenerator
@@ -18,7 +20,7 @@ parser.add_argument('--start_epoch', type=int, default=0, help='starting epoch')
 parser.add_argument('--end_epoch', type=int, default=200, help='end epochs of training')
 parser.add_argument('--batch_size', type=int, default=4, help='size of the batches')
 parser.add_argument('--batch_size_cls', type=int, default=16, help='size of the batches of class')
-parser.add_argument('--data_root', type=str, default='./datasets/MPM2HE', help='root directory of the dataset')
+parser.add_argument('--data_root', type=str, default='../datasets/MPM2HE-256', help='root directory of the dataset')
 parser.add_argument('--lr', type=float, default=0.0002, help='initial learning rate')
 parser.add_argument('--num_classes', type=int, default=9,help='Number of categories')
 parser.add_argument('--decay_epoch', type=int, default=100,help='epoch to start linearly decaying the learning rate to 0')
@@ -32,12 +34,17 @@ parser.add_argument('--threshold_B', type=int, default=180, help='threshold of B
 parser.add_argument('--outf', type=str, default='./output/', help='root directory of the models')
 parser.add_argument('--pretrained_model_path', type=str, default='', help='load model or not')
 parser.add_argument('--env', type=str, default='ccm', help='environment name of visdom')
+parser.add_argument('--local_rank', default=-1, type=int, help='local device id on current node')
+
 
 opt = parser.parse_args()
 
 os.environ["CUDA_DEVICE_ORDER"] = 'PCI_BUS_ID'
 os.environ["CUDA_VISIBLE_DEVICES"] = opt.gpu_ids
 n_gpus = len(opt.gpu_ids.split(','))
+
+dist.init_process_group(backend='nccl', world_size=n_gpus, rank=opt.local_rank)
+torch.cuda.set_device(opt.local_rank)
 
 transforms_ = [
     trans.Resize(int(opt.size * 1.12), trans.InterpolationMode.BICUBIC),
@@ -57,16 +64,20 @@ transforms_cls = [
 ]
 
 dataset = ImageDataset(opt.data_root, transforms_=transforms_, unaligned=True, batch_size=opt.batch_size)
+train_sample = torch.utils.data.distributed.DistributedSampler(dataset)
+
 dataset_cls = ClsDataset(opt.data_root, transforms_=transforms_cls, unaligned=True, batch_size=opt.batch_size_cls)
-dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, 
-                        num_workers=opt.num_worker, drop_last=True)
-dataloader_cls = DataLoader(dataset_cls, batch_size=opt.batch_size_cls, shuffle=True, 
-                            num_workers=opt.num_worker, drop_last=True)
+cls_sample = torch.utils.data.distributed.DistributedSampler(dataset_cls)
+
+dataloader = DataLoader(dataset, batch_size=opt.batch_size, #shuffle=True, 
+                        num_workers=opt.num_worker, drop_last=True, sampler=train_sample)
+dataloader_cls = DataLoader(dataset_cls, batch_size=opt.batch_size_cls, #shuffle=True, 
+                            num_workers=opt.num_worker, drop_last=True, sampler=cls_sample)
 
 time_str = datetime.datetime.strftime(datetime.datetime.now(),'%Y_%m_%d_%H_%M_%S')
 opt.outf = opt.outf + time_str
 
-if not os.path.exists(opt.outf):
+if not os.path.exists(opt.outf) and opt.local_rank == 0:
     os.makedirs(opt.outf)
     print_options(opt)
 
@@ -123,40 +134,43 @@ if resume_file:
 
 
 if torch.cuda.is_available():
-    netG_A2B.cuda()
-    netG_B2A.cuda()
-    netD_A.cuda()
-    netD_B.cuda()
+    netG_A2B.cuda(opt.local_rank)
+    netG_B2A.cuda(opt.local_rank)
+    netD_A.cuda(opt.local_rank)
+    netD_B.cuda(opt.local_rank)
     
 if torch.cuda.device_count() > 1:
-    netG_A2B = torch.nn.DataParallel(netG_A2B)
-    netG_B2A = torch.nn.DataParallel(netG_B2A)
-    netD_A = torch.nn.DataParallel(netD_A)
-    netD_B = torch.nn.DataParallel(netD_B)
+    netG_A2B = torch.nn.parallel.DistributedDataParallel(netG_A2B.cuda(opt.local_rank), device_ids=[opt.local_rank], find_unused_parameters=False)
+    netG_B2A = torch.nn.parallel.DistributedDataParallel(netG_B2A.cuda(opt.local_rank), device_ids=[opt.local_rank], find_unused_parameters=False)
+    netD_A = torch.nn.parallel.DistributedDataParallel(netD_A.cuda(opt.local_rank), device_ids=[opt.local_rank], find_unused_parameters=False)
+    netD_B = torch.nn.parallel.DistributedDataParallel(netD_B.cuda(opt.local_rank), device_ids=[opt.local_rank], find_unused_parameters=False)
 
 fake_A_buffer = ReplayBuffer()
 fake_B_buffer = ReplayBuffer()
 
 
 ###### Loss plot ######
-logger = Logger(opt.end_epoch, len(dataloader), start_epoch, '%s' % (opt.env))
+if opt.local_rank == 0:
+    logger = Logger(opt.end_epoch, len(dataloader), start_epoch, '%s' % (opt.env))
 #######################
 
-target_real = torch.ones((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda()
-target_fake = torch.zeros((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda()
+target_real = torch.ones((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda(opt.local_rank)
+target_fake = torch.zeros((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda(opt.local_rank)
 total_iters = len(dataloader) * start_epoch
 ###### Training ######
 for epoch in range(start_epoch, opt.end_epoch):
+    train_sample.set_epoch(epoch)
+    cls_sample.set_epoch(epoch)
     for i, batch_data in enumerate(zip(itertools.cycle(dataloader_cls), dataloader)):
         cls_batch, batch = batch_data
         # class input
-        real_cls_A = Variable(cls_batch['img_A']).cuda()
-        real_cls_B = Variable(cls_batch['img_B']).cuda()
-        real_label_A = Variable(cls_batch['label_A']).long().cuda()
-        real_label_B = Variable(cls_batch['label_B']).long().cuda()
+        real_cls_A = Variable(cls_batch['img_A']).cuda(opt.local_rank)
+        real_cls_B = Variable(cls_batch['img_B']).cuda(opt.local_rank)
+        real_label_A = Variable(cls_batch['label_A']).long().cuda(opt.local_rank)
+        real_label_B = Variable(cls_batch['label_B']).long().cuda(opt.local_rank)
         # model input
-        real_A = Variable(batch['A']).cuda()
-        real_B = Variable(batch['B']).cuda()
+        real_A = Variable(batch['A']).cuda(opt.local_rank)
+        real_B = Variable(batch['B']).cuda(opt.local_rank)
         
         ###### Generators A2B and B2A ######
         optimizer_G.zero_grad()
@@ -242,21 +256,21 @@ for epoch in range(start_epoch, opt.end_epoch):
 
         optimizer_D_B.step()
         ###################################
-
-        logger.log({'loss_G': loss_G,
-                    'loss_content': (loss_content),
-                    'loss_G_GAN': (loss_GAN_A2B + loss_GAN_B2A),
-                    'loss_G_cycle': (loss_cycle_ABA + loss_cycle_BAB),
-                    'loss_base': loss_base,
-                    'loss_class': (loss_cls),
-                    'loss_cls_same': loss_cls_same,
-                    'loss_D': (loss_D_A + loss_D_B),
-                    },
-                   images={'real_A': real_A, 'fake_B': fake_B, 'real_B': real_B, 'fake_A': fake_A})
+        if opt.local_rank == 0:
+            logger.log({'loss_G': loss_G,
+                        'loss_content': (loss_content),
+                        'loss_G_GAN': (loss_GAN_A2B + loss_GAN_B2A),
+                        'loss_G_cycle': (loss_cycle_ABA + loss_cycle_BAB),
+                        'loss_base': loss_base,
+                        'loss_class': (loss_cls),
+                        'loss_cls_same': loss_cls_same,
+                        'loss_D': (loss_D_A + loss_D_B),
+                        },
+                    images={'real_A': real_A, 'fake_B': fake_B, 'real_B': real_B, 'fake_A': fake_A})
         
         ###################################
         # save model per half an epoch
-        if (i + 1) % (len(dataloader) // 5) == 0:
+        if (i + 1) % (len(dataloader) // 5) == 0 and opt.local_rank == 0:
             model_root = os.path.join(opt.outf, 'temp')
             if not os.path.exists(model_root):
                 os.makedirs(model_root)
@@ -277,13 +291,14 @@ for epoch in range(start_epoch, opt.end_epoch):
      
     ################################### 
     modelroot = os.path.join(opt.outf, 'epoch' + str(epoch+1))        
-    if not os.path.exists(modelroot):
+    if not os.path.exists(modelroot) and opt.local_rank == 0:
         os.makedirs(modelroot)
-    # save netG_A2B
-    save_checkpoint(netG_A2B, 'netG_A2B', modelroot, optimizer_G, lr_scheduler_G, epoch+1)
-    # save netG_B2A
-    save_checkpoint(netG_B2A, 'netG_B2A', modelroot)
-    # save netD_A
-    save_checkpoint(netD_A, 'netD_A', modelroot, optimizer_D_A, lr_scheduler_D_A)
-    # save netD_B
-    save_checkpoint(netD_B, 'netD_B', modelroot, optimizer_D_B, lr_scheduler_D_B)
+    if opt.local_rank == 0:
+        # save netG_A2B
+        save_checkpoint(netG_A2B, 'netG_A2B', modelroot, optimizer_G, lr_scheduler_G, epoch+1,)
+        # save netG_B2A
+        save_checkpoint(netG_B2A, 'netG_B2A', modelroot)
+        # save netD_A
+        save_checkpoint(netD_A, 'netD_A', modelroot, optimizer_D_A, lr_scheduler_D_A)
+        # save netD_B
+        save_checkpoint(netD_B, 'netD_B', modelroot, optimizer_D_B, lr_scheduler_D_B)

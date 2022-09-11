@@ -1,5 +1,7 @@
 
 
+
+
 # CCM-stainGAN
 
 This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
@@ -31,17 +33,17 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 
 ## 2. Data Preparation
 
-- The MPM and H&E images are available, download from ([Google Drive](https://drive.google.com/drive/folders/1zua6CNu9HDC657dBz4sB0UU6Fg7PRyZY?usp=sharing) / [Baidu Disk](https://pan.baidu.com/s/148UNzbngfKQeHX7RsoMnXg?pwd=ccm1)). 
+- The MPM and H&E images are available, download from ([Google Drive](https://drive.google.com/drive/folders/1zua6CNu9HDC657dBz4sB0UU6Fg7PRyZY?usp=sharing) / [Baidu Disk](https://pan.baidu.com/s/148UNzbngfKQeHX7RsoMnXg?pwd=ccm1)).  Other data used in this repo are available from the corresponding author upon reasonable request. 
 
   **Note:** access code for `Baidu Disk` is `ccm1`.
   
-- Split the images into tiles.
+- Split the images into patches.
 
-- Place the training MPM tiles to `/CCM-stainGAN/dataset/trian/A/` and the H&E tiles to `/CCM-stainGAN/dataset/trian/B/`.
+- Place the training MPM patches to `/CCM-stainGAN/dataset/trian/A/` and the H&E patches to `/CCM-stainGAN/dataset/trian/B/`.
 
-- Place the training MPM category tiles to `/CCM-stainGAN/dataset/trian/cls_A`  and the H&E  category tiles to `/CCM-stainGAN/dataset/trian/cls_B` .
+- Place the training MPM category patches to `/CCM-stainGAN/dataset/trian/cls_A`  and the H&E  category patches to `/CCM-stainGAN/dataset/trian/cls_B` .
 
-- Place the testing MPM tiles to `/CCM-stainGAN/dataset/test/A/` and the H&E tiles to `/CCM-stainGAN/dataset/test/B/`.
+- Place the testing MPM patches to `/CCM-stainGAN/dataset/test/A/` and the H&E patches to `/CCM-stainGAN/dataset/test/B/`.
 
 - Then this repo is collected as the following form:
 
@@ -113,7 +115,7 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
 - Multi GPUs
 
   Please change the **gpu_ids** to adapt your device.
-  
+
   ```shell
   cd /CCM-stainGAN/
   
@@ -126,7 +128,17 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   # transform by UTOM
   python train_utom.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
+
+- DDP multi GPUs 
+
+  We also provide the DistributedDataParallel version of multi GPUs script. Please change the **gpu_ids** to adapt your device.
+
+  ```shell
+  cd /CCM-stainGAN/
   
+  # transform by CCM-stainGAN
+  python -m torch.distributed.launch --nproc_per_node=6 --master_port 11111 train_ddp.py --gpu_ids 0,1,2,3,4,5 --end_epoch 100 --batch_size 4 --batch_size_cls 8 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
+  ```
 
 The models will be saved in `/CCM-stainGAN/output/{env}/`.
 
