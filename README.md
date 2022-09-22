@@ -147,7 +147,7 @@ If the repo helps you, please consider citing our works:
 ```shell
 # CCM-stainGAN
 @inproceedings{CCM-stainGAN,
-  title={Resection-inspired histopathological diagnosis of cerebral cavernous 			malformations using quantitative multiphoton microscopy},
+  title={Resection-inspired histopathological diagnosis of cerebral cavernous malformations using quantitative multiphoton microscopy},
   author={Shu Wang and Yueying Li and Yixuan Xu and Shiwei Song and Ruolan Lin and Shuoyu Xu and Xingxin Huang and Limei Zheng and Chengcong Hu and Xinquan Sun and Feng Huang and Xingfu Wang and Jianxin Chen},
   booktitle={Theranostics},
   year={2022}
