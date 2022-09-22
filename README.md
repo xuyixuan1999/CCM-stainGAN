@@ -1,8 +1,6 @@
-
-
-
-
 # CCM-stainGAN
+
+---
 
 This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
 
@@ -129,9 +127,9 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   python train_utom.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
 
-- DDP multi GPUs 
+- Multi GPUs With DDP
 
-  We also provide the DistributedDataParallel version of multi GPUs script. Please change the **gpu_ids** to adapt your device.
+  We also provide the **DistributedDataParallel** version of multi GPUs script. Please change the **gpu_ids** to adapt your device.
 
   ```shell
   cd /CCM-stainGAN/
@@ -148,5 +146,10 @@ If the repo helps you, please consider citing our works:
 
 ```shell
 # CCM-stainGAN
-
+@inproceedings{CCM-stainGAN,
+  title={Resection-inspired histopathological diagnosis of cerebral cavernous 			malformations using quantitative multiphoton microscopy},
+  author={Shu Wang and Yueying Li and Yixuan Xu and Shiwei Song and Ruolan Lin and Shuoyu Xu and Xingxin Huang and Limei Zheng and Chengcong Hu and Xinquan Sun and Feng Huang and Xingfu Wang and Jianxin Chen},
+  booktitle={Theranostics},
+  year={2022}
+}
 ```
