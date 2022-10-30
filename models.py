@@ -33,7 +33,7 @@ class ResGenerator(nn.Module):
         # Downsampling
         in_features = 64
         out_features = in_features*2
-        for _ in range(3):
+        for _ in range(2):
             model += [  nn.Conv2d(in_features, out_features, 3, stride=2, padding=1),
                         nn.InstanceNorm2d(out_features),
                         nn.ReLU(inplace=True) ]
@@ -46,7 +46,7 @@ class ResGenerator(nn.Module):
 
         # Upsampling
         out_features = in_features//2
-        for _ in range(3):
+        for _ in range(2):
             model += [  nn.ConvTranspose2d(in_features, out_features, 3, stride=2, padding=1, output_padding=1),
                         nn.InstanceNorm2d(out_features),
                         nn.ReLU(inplace=True) ]
