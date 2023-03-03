@@ -32,6 +32,8 @@ parser.add_argument('--threshold_B', type=int, default=180, help='threshold of B
 parser.add_argument('--outf', type=str, default='./output/', help='root directory of the models')
 parser.add_argument('--pretrained_model_path', type=str, default='', help='load model or not')
 parser.add_argument('--env', type=str, default='ccm', help='environment name of visdom')
+parser.add_argument('--port', type=str, default='8097',
+                    help='the visdom output port')
 
 opt = parser.parse_args()
 
@@ -139,7 +141,7 @@ fake_B_buffer = ReplayBuffer()
 
 
 ###### Loss plot ######
-logger = Logger(opt.end_epoch, len(dataloader), start_epoch, '%s' % (opt.env))
+logger = Logger(opt.end_epoch, len(dataloader), start_epoch, '%s' % (opt.env), opt.port)
 #######################
 
 target_real = torch.ones((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda()

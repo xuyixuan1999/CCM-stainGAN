@@ -122,7 +122,8 @@ fake_B_buffer = ReplayBuffer()
 
 
 ###### Loss plot ######
-logger = Logger(opt.end_epoch, len(dataloader), start_epoch, '%s' % (opt.env))
+logger = Logger(opt.end_epoch, len(dataloader),
+                start_epoch, '%s' % (opt.env), opt.port)
 #######################
 
 target_real = torch.ones((opt.batch_size, 1), dtype=torch.float32, requires_grad=False).cuda()

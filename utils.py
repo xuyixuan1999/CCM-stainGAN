@@ -19,8 +19,8 @@ def tensor2image(tensor):
     return image.astype(np.uint8)
 
 class Logger():
-    def __init__(self, n_epochs, batches_epoch, start_epoch=1, env='test'):
-        self.viz = Visdom(env=f'{env}')
+    def __init__(self, n_epochs, batches_epoch, start_epoch=1, env='test', port=8097):
+        self.viz = Visdom(env=f'{env}', port=port)
         self.n_epochs = n_epochs
         self.batches_epoch = batches_epoch
         self.set_epoch = 1
