@@ -63,10 +63,10 @@ transforms_cls = [
     trans.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ]
 
-dataset = ImageDataset(opt.data_root, transforms_=transforms_, unaligned=True, batch_size=opt.batch_size)
+dataset = ImageDataset(opt.data_root, transforms_=transforms_, batch_size=opt.batch_size)
 train_sample = torch.utils.data.distributed.DistributedSampler(dataset)
 
-dataset_cls = ClsDataset(opt.data_root, transforms_=transforms_cls, unaligned=True, batch_size=opt.batch_size_cls)
+dataset_cls = ClsDataset(opt.data_root, transforms_=transforms_cls, batch_size=opt.batch_size_cls)
 cls_sample = torch.utils.data.distributed.DistributedSampler(dataset_cls)
 
 dataloader = DataLoader(dataset, batch_size=opt.batch_size, #shuffle=True, 

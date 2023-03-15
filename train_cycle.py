@@ -44,7 +44,7 @@ transforms_ = [
     trans.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ]
 
-dataset = ImageDataset(opt.data_root, transforms_=transforms_, unaligned=True, batch_size=opt.batch_size)
+dataset = ImageDataset(opt.data_root, transforms_=transforms_, batch_size=opt.batch_size)
 dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, 
                         num_workers=opt.num_worker, drop_last=True)
 

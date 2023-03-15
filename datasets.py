@@ -8,21 +8,15 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 
 class ImageDataset(Dataset):
-    def __init__(self, root, transforms_=None, unaligned=False, batch_size=None,):
+    def __init__(self, root, transforms_=None,  batch_size=None,):
         self.transform = transforms.Compose(transforms_)
-        self.unaligned = unaligned
         self.batch_size = batch_size
-
         self.files_A = sorted(glob.glob(os.path.join(root, 'train/A') + '/*.png'))
         self.files_B = sorted(glob.glob(os.path.join(root, 'train/B') + '/*.png'))
 
     def __getitem__(self, index):
         item_A = self.transform(Image.open(self.files_A[index % len(self.files_A)]))
-        
-        if self.unaligned:
-            item_B = self.transform(Image.open(self.files_B[random.randint(0, len(self.files_B) - 1)]))
-        else:
-            item_B = self.transform(Image.open(self.files_B[index % len(self.files_B)]))
+        item_B = self.transform(Image.open(self.files_B[random.randint(0, len(self.files_B) - 1)]))
 
         return {'A': item_A, 'B': item_B}
 
@@ -35,20 +29,15 @@ class ClsDataset(Dataset):
     Such as: img_001_0.png, img_002_0.png, img_003_1.png, img_004_1.png. 
     The last number is label of the dataset.
     '''
-    def __init__(self, root, transforms_=None, unaligned=False, batch_size=None):
+    def __init__(self, root, transforms_=None, batch_size=None):
         self.transforms = transforms.Compose(transforms_)
-        self.unaligned = unaligned
         self.batch_size = batch_size
         self.files_A = sorted(glob.glob(os.path.join(root, 'train/cls_A') + '/*.png'))
         self.files_B = sorted(glob.glob(os.path.join(root, 'train/cls_B') + '/*.png'))
         
     def __getitem__(self, index):
         name_A = self.files_A[index % len(self.files_A)]   
-         
-        if self.unaligned:
-            name_B = self.files_B[random.randint(0, len(self.files_B) - 1)]
-        else:
-            name_B = self.files_B[index % len(self.files_B)]
+        name_B = self.files_B[random.randint(0, len(self.files_B) - 1)]
             
         label_A = name_A.split('/')[-1].split('.')[0].split('_')[-1]
         label_B = name_B.split('/')[-1].split('.')[0].split('_')[-1]

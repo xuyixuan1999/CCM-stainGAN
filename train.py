@@ -26,7 +26,7 @@ parser.add_argument('--size', type=int, default=256, help='size of the data crop
 parser.add_argument('--input_nc', type=int, default=3, help='number of channels of input data')
 parser.add_argument('--output_nc', type=int, default=3, help='number of channels of output data')
 parser.add_argument('--gpu_ids', type=str, default='0', help='choose gpus')
-parser.add_argument('--num_worker', type=int, default=4, help='number worker of dataloader')
+parser.add_argument('--num_worker', type=int, default=4, help='number worker of dataloader, windows must select 0')
 parser.add_argument('--threshold_A', type=int, default=35, help='threshold of A')
 parser.add_argument('--threshold_B', type=int, default=180, help='threshold of B')
 parser.add_argument('--outf', type=str, default='./output/', help='root directory of the models')
@@ -58,8 +58,8 @@ transforms_cls = [
     trans.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
 ]
 
-dataset = ImageDataset(opt.data_root, transforms_=transforms_, unaligned=True, batch_size=opt.batch_size)
-dataset_cls = ClsDataset(opt.data_root, transforms_=transforms_cls, unaligned=True, batch_size=opt.batch_size_cls)
+dataset = ImageDataset(opt.data_root, transforms_=transforms_, batch_size=opt.batch_size)
+dataset_cls = ClsDataset(opt.data_root, transforms_=transforms_cls, batch_size=opt.batch_size_cls)
 dataloader = DataLoader(dataset, batch_size=opt.batch_size, shuffle=True, 
                         num_workers=opt.num_worker, drop_last=True)
 dataloader_cls = DataLoader(dataset_cls, batch_size=opt.batch_size_cls, shuffle=True, 
