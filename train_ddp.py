@@ -1,19 +1,19 @@
 import argparse
 import datetime
-from distutils.command.install_egg_info import safe_name
 import itertools
 import os
 
 import torch
+import torch.distributed as dist
 import torchvision.transforms as trans
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-import torch.distributed as dist
 
 from datasets import ClsDataset, ImageDataset
 from models import Discriminator, UnetClsGenerator
-from utils import (LambdaLR, Logger, ReplayBuffer, CentnetLoss, print_options,
-                   weights_init_normal, save_checkpoint, load_checkpoint)
+from utils import (CentnetLoss, LambdaLR, Logger, ReplayBuffer,
+                   load_checkpoint, print_options, save_checkpoint,
+                   weights_init_normal)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--start_epoch', type=int, default=0, help='starting epoch')

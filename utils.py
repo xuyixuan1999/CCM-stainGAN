@@ -1,16 +1,16 @@
-import random
-import os
-import time
 import datetime
+import os
+import random
 import sys
-from turtle import forward
-from PIL import  Image
+import time
 
-from torch.autograd import Variable
+import numpy as np
 import torch
 import torch.nn as nn
+from PIL import Image
+from torch.autograd import Variable
 from visdom import Visdom
-import numpy as np
+
 
 def tensor2image(tensor):
     image = 127.5*(tensor[0].cpu().float().numpy() + 1.0)
