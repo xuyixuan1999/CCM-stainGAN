@@ -100,13 +100,13 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   ```shell
   cd /CCM-stainGAN/
   
-  # transform by CCM-stainGAN
+  # training by CCM-stainGAN
   python train.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
   
-  # transform by CycleGAN
+  # training by CycleGAN
   python train_cycle.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --decay_epoch 50 --env cycle
   
-  # transform by UTOM
+  # training by UTOM
   python train_utom.py --gpu_ids 0 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
 
@@ -117,13 +117,13 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   ```shell
   cd /CCM-stainGAN/
   
-  # transform by CCM-stainGAN
+  # training by CCM-stainGAN
   python train.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --batch_size_cls 16 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
   
-  # transform by CycleGAN
+  # training by CycleGAN
   python train_cycle.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --env cycle
   
-  # transform by UTOM
+  # training by UTOM
   python train_utom.py --gpu_ids 0,1,2,3 --end_epoch 100 --batch_size 4 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env utom
   ```
 
@@ -134,11 +134,25 @@ This code is for the virtual staining part of paper ***Resection-Inspired Histop
   ```shell
   cd /CCM-stainGAN/
   
-  # transform by CCM-stainGAN
+  # training by CCM-stainGAN
   python -m torch.distributed.launch --nproc_per_node=6 --master_port 11111 train_ddp.py --gpu_ids 0,1,2,3,4,5 --end_epoch 100 --batch_size 4 --batch_size_cls 8 --num_classes 9 --decay_epoch 50 --threshold_A 35 --threshold_B 180 --env ccm
   ```
 
 The models will be saved in `/CCM-stainGAN/output/{env}/`.
+
+## 4. Test
+
+- Run the following command to test the result.
+- Please change the **pretrained_model_path** and **gpu_ids** to adapt your model and device.
+
+```sh
+cd /CCM-stainGAN/
+
+# transform by CCM-stainGAN
+python test.py --gpu_ids 0 --pretrained_model_path epoch100.pth --outf ./output/test 
+```
+
+
 
 ## Citation
 

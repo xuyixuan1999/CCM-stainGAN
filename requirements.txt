@@ -4,3 +4,4 @@ torch==1.8.0
 torchvision==0.9.0
 visdom==0.1.8.9
 opencv-python==4.5.5.64
+numpy==1.19.2

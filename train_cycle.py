@@ -10,8 +10,8 @@ from torch.utils.data import DataLoader
 
 from datasets import ImageDataset
 from models import Discriminator, ResGenerator
-from utils import (LambdaLR, Logger, ReplayBuffer, print_options,
-                   weights_init_normal, save_checkpoint, load_checkpoint)
+from utils import (LambdaLR, Logger, ReplayBuffer, load_checkpoint,
+                   print_options, save_checkpoint, weights_init_normal)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--start_epoch', type=int, default=0, help='starting epoch')
