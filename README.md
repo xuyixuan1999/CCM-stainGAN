@@ -143,16 +143,15 @@ The models will be saved in `/CCM-stainGAN/output/{env}/`.
 ## 4. Test
 
 - Run the following command to test the result.
+
 - Please change the **pretrained_model_path** and **gpu_ids** to adapt your model and device.
 
-```sh
-cd /CCM-stainGAN/
-
-# transform by CCM-stainGAN
-python test.py --gpu_ids 0 --pretrained_model_path epoch100.pth --outf ./output/test 
-```
-
-
+  ```sh
+  cd /CCM-stainGAN/
+  
+  # transform by CCM-stainGAN
+  python test.py --gpu_ids 0 --pretrained_model_path epoch100.pth --outf ./output/test 
+  ```
 
 ## Citation
 
