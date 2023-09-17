@@ -13,10 +13,6 @@ This code is for the virtual staining part of [paper](https://www.thno.org/v12p6
 | :---------------------------------------------------: | :----------------------------------------------------: | :----------------------------------------------------: |
 | <img src="./figure/he-mpm.gif"  height=240 width=240> | <img src="./figure/he-mpm1.gif"  height=240 width=240> | <img src="./figure/ppb-mpm.gif"  height=240 width=240> |
 
-## Network architecture
-
-<img src="./figure/structure.png"  height=400 width=780>
-
 ## 1. Create Envirement:
 
 - Python 3.6 (Recommend to use [Anaconda](https://www.anaconda.com/download/#linux))
