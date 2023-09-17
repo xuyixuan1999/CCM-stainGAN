@@ -2,7 +2,10 @@
 
 ---
 
-This code is for the virtual staining part of paper ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
+This code is for the virtual staining part of [paper](https://www.thno.org/v12p6595.htm) ***Resection-Inspired Histopathological Diagnosis of Cerebral Cavernous Malformations Using Quantitative Multiphoton Microscopy***.
+
+- 2023.09.15 🔥 The related work of CCM-StainGAN has been published by ***Nature Communications*** ([paper](https://www.nature.com/articles/s41467-023-41165-1)).
+- 2022.11.02 🎉 The article was selected as the **cover** of the journal.
 
 ## Preview
 
@@ -158,11 +161,25 @@ The models will be saved in `/CCM-stainGAN/output/{env}/`.
 If the repo helps you, please consider citing our works:
 
 ```shell
-# CCM-stainGAN
-@inproceedings{CCM-stainGAN,
+@article{wang2022resection,
   title={Resection-inspired histopathological diagnosis of cerebral cavernous malformations using quantitative multiphoton microscopy},
-  author={Shu Wang and Yueying Li and Yixuan Xu and Shiwei Song and Ruolan Lin and Shuoyu Xu and Xingxin Huang and Limei Zheng and Chengcong Hu and Xinquan Sun and Feng Huang and Xingfu Wang and Jianxin Chen},
-  booktitle={Theranostics},
-  year={2022}
+  author={Wang, Shu and Li, Yueying and Xu, Yixuan and Song, Shiwei and Lin, Ruolan and Xu, Shuoyu and Huang, Xingxin and Zheng, Limei and Hu, Chengcong and Sun, Xinquan and others},
+  journal={Theranostics},
+  volume={12},
+  number={15},
+  pages={6595},
+  year={2022},
+  publisher={Ivyspring International Publisher}
+}
+
+@article{wang2023deep,
+  title={A deep learning-based stripe self-correction method for stitched microscopic images},
+  author={Wang, Shu and Liu, Xiaoxiang and Li, Yueying and Sun, Xinquan and Li, Qi and She, Yinhua and Xu, Yixuan and Huang, Xingxin and Lin, Ruolan and Kang, Deyong and others},
+  journal={Nature Communications},
+  volume={14},
+  number={1},
+  pages={5393},
+  year={2023},
+  publisher={Nature Publishing Group UK London}
 }
 ```
