@@ -6,6 +6,7 @@ This code is for the virtual staining part of [paper](https://www.thno.org/v12p6
 
 - 2023.09.15 🔥 The related work of CCM-StainGAN has been published by ***Nature Communications*** ([paper](https://www.nature.com/articles/s41467-023-41165-1)).
 - 2022.11.02 🎉 The article was selected as the **cover** of the journal.
+- 2022.08.30 🚀 Update the code of the repo.
 
 ## Preview
 
